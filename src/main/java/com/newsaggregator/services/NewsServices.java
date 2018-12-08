@@ -63,7 +63,7 @@ public class NewsServices {
 			return resList;
 		}
 	}
-	@GetMapping("/api/admin-login")
+	@GetMapping("/api/admin/login")
 	public List<String> adminLogin(@RequestParam String username,@RequestParam String password)
 	{
 		
@@ -87,7 +87,7 @@ public class NewsServices {
 		}
 	}
 	
-	@GetMapping("/api/agency-login")
+	@GetMapping("/api/agency/login")
 	public List<String> agencyLogin(@RequestParam String username,@RequestParam String password)
 	{
 		
