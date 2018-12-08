@@ -2,10 +2,12 @@ package com.newsaggregator.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,6 +25,9 @@ public class NewsSnippet {
 	private Date publish_time;
 	private String source_link;
 	private String category;
+	private String fullStory;
+	@OneToMany(mappedBy = "news", cascade = CascadeType.REMOVE)
+	private News_owner publisher;
 	
 	
 	public String getSource_link() {
@@ -66,6 +71,12 @@ public class NewsSnippet {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public String getFullStory() {
+		return fullStory;
+	}
+	public void setFullStory(String fullStory) {
+		this.fullStory = fullStory;
 	}
 	
 }
