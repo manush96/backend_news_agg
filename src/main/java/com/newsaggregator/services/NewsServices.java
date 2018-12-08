@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.newsaggregator.daos.NewsSnippetDao;
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.models.User;
@@ -87,6 +86,21 @@ public class NewsServices {
 			return resList;
 		}
 	}
+	
+	
+	@GetMapping("/api/user/findOne")
+	public User findOne(@RequestParam String username)
+	{
+		User user = new User();
+		user = (User) userRepository.findUserByUsername(username).get(0);
+		
+		
+		
+		return user;
+	}
+	
+	
+	
 	@PostMapping(path = "/api/registration",consumes = "application/json")
 	public void registration(@RequestBody Object user)
 	{
