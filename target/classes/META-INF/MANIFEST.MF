@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Built-By: manushpatel
-Build-Jdk: 10.0.2
 Implementation-Title: news_aggregator_backend
 Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: ADMIN
 Implementation-Vendor-Id: com.example
+Build-Jdk: 1.8.0_60
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/news_aggregator_backend
 Created-By: Maven Integration for Eclipse

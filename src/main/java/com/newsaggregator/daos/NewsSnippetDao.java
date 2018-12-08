@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.repositories.NewsSnippetRepository;
+import com.newsaggregator.utils.EntertainmentFetchUtil;
 import com.newsaggregator.utils.HeadlineFetchUtil;
 import com.newsaggregator.utils.SportsFetchUtil;
 
@@ -24,6 +25,8 @@ public class NewsSnippetDao {
 	
 	@Autowired
 	SportsFetchUtil sportsFetchUtils;
+	@Autowired
+	EntertainmentFetchUtil entertainmentFetchUtil;
 	
 	public void fetchAndInsertHeadlines()
 	{
@@ -69,6 +72,36 @@ public class NewsSnippetDao {
 			for(int i=0;i<newsList.size();i++)
 			{
 				System.out.println(newsList.get(i).getHeadline());
+			}
+			for(int i=0;i< newsList.size();i++)
+			{
+				if(titles.contains(newsList.get(i).getHeadline()))
+				{
+					continue;
+				}
+				else
+				{
+					newsSnippetRepository.save(newsList.get(i));
+				}
+			
+			}
+				
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void fetchAndInsertEntertainment()
+	{
+		try {
+			List<NewsSnippet> newsList = entertainmentFetchUtil.fetchHeadline("us");
+			List<NewsSnippet> existing = (List<NewsSnippet>) newsSnippetRepository.findAll();
+			List<String> titles = new ArrayList<String>();
+			
+			for(int i=0;i< existing.size();i++)
+			{
+				titles.add(existing.get(i).getHeadline());
 			}
 			for(int i=0;i< newsList.size();i++)
 			{

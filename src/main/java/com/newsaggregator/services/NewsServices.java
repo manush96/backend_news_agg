@@ -65,4 +65,11 @@ public class NewsServices {
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Sport");
 		return a;
 	}
+	@GetMapping("/api/entertainmenthome")
+	public List<NewsSnippet> getEntertainmentHome()
+	{
+		newsSnippetDao.fetchAndInsertEntertainment();
+		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Entertainment");
+		return a;
+	}
 }
