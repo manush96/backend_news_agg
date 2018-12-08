@@ -10,9 +10,13 @@ import java.util.Optional;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -162,6 +166,11 @@ public class NewsServices {
 		Optional<User> user = userRepository.findById(id);
 	if(user.isPresent())
 		userRepository.delete(user.get());
+	}
+	@RequestMapping(value = "/api/deleteNews/{id}", method = RequestMethod.DELETE)
+	public void deleteNews(@PathVariable("id") int itemId)
+	{
+		newsSnippetRepository.deleteById(itemId); 
 	}
 	@GetMapping("/api/myfeed")
 	public List<NewsSnippet> myfeed(@RequestParam String username)
