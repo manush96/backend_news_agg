@@ -58,6 +58,28 @@ public class NewsServices {
 			return resList;
 		}
 	}
+	@GetMapping("/api/admin-login")
+	public List<String> adminLogin(@RequestParam String username,@RequestParam String password)
+	{
+		List<String> resList = new ArrayList<String>();
+		
+		User user = userRepository.findUserByUsername(username).get(0);
+		if(user.getUsername()== null)
+		{
+			resList.add("false");
+			return resList;
+		}
+		else if(user.getPassword().equals(password))
+		{
+			resList.add("true");
+			return resList;
+		}
+		else
+		{
+			resList.add("false");
+			return resList;
+		}
+	}
 	@GetMapping("/api/sportshome")
 	public List<NewsSnippet> getSportsHome()
 	{
