@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.newsaggregator.daos.NewsSnippetDao;
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.models.User;
@@ -85,12 +87,22 @@ public class NewsServices {
 			return resList;
 		}
 	}
-	@PostMapping("/api/registration")
-	public void registration(@RequestBody User user)
+	@PostMapping(path = "/api/registration",consumes = "application/json")
+	public void registration(@RequestBody Object user)
 	{
-		User user1 = (User) userRepository.findUserByUsername(user.getUsername());
-		if(user1 == null)
-		userRepository.save(user);
+		System.out.println(user.getClass()); 
+	
+		System.out.println(((java.util.LinkedHashMap) user).get("firstname"));
+		User user1 = new User();
+		user1.setFirstname(((java.util.LinkedHashMap) user).get("firstname").toString());
+		user1.setLastname(((java.util.LinkedHashMap) user).get("lastname").toString());
+		user1.setUsername(((java.util.LinkedHashMap) user).get("username").toString());
+		user1.setPassword(((java.util.LinkedHashMap) user).get("password").toString());
+		user1.setPreference(((java.util.LinkedHashMap) user).get("preference").toString());
+		user1.setEmail(((java.util.LinkedHashMap) user).get("email").toString());
+		
+		
+		userRepository.save(user1);
 	}
 	@GetMapping("/api/findallusers")
 	public List<User> adminSearch()
@@ -168,4 +180,11 @@ public class NewsServices {
 	String sa[] = s.split(",");
 	return Arrays.asList(sa);
 	}
+//	private User parseJSON(String s) {
+//		s = s.substring(1, s.length()-1);
+//		String s1[] = s.split(", ");
+//		for(int i = 0,)
+//		return null;
+//		
+//	}
 }
