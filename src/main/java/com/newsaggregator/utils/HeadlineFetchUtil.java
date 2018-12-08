@@ -24,7 +24,6 @@ public class HeadlineFetchUtil {
 	public  List<NewsSnippet> fetchHeadline(String country) throws JSONException
 	{
 		JSONObject jsonObj = null;
-		NewsSnippet ns=  new NewsSnippet();
 
 		final String uri = "https://newsapi.org/v2/top-headlines?country=en&apiKey=65c90f5e609b434ab94f2d5e572dd67e";
 
@@ -40,6 +39,8 @@ public class HeadlineFetchUtil {
 	    JSONArray articles = (JSONArray) jsonObj.get("articles");
 	    for(int i=0;i<articles.length();i++)
 	    {
+			NewsSnippet ns=  new NewsSnippet();
+
 	    	JSONObject article =  (JSONObject) articles.get(i);
 	    	try {
 	    	Object hl = (Object) article.get("title");

@@ -22,7 +22,6 @@ public class SportsFetchUtil {
 		public  List<NewsSnippet> fetchHeadline(String country) throws JSONException
 		{
 			JSONObject jsonObj = null;
-			NewsSnippet ns=  new NewsSnippet();
 
 			final String uri = "https://newsapi.org/v2/top-headlines?country=us&category=sports&apiKey=65c90f5e609b434ab94f2d5e572dd67e";
 
@@ -40,6 +39,8 @@ public class SportsFetchUtil {
 
 		    for(int i=0;i<articles.length();i++)
 		    {
+				NewsSnippet ns=  new NewsSnippet();
+
 		    	JSONObject article =  (JSONObject) articles.get(i);
 		    	try {
 		    	Object hl = (Object) article.get("title");
@@ -53,47 +54,27 @@ public class SportsFetchUtil {
 		    		continue;
 		    	}
 		    	else {
+		    		System.out.println((String)hl);
 		    			ns.setHeadline((String)hl);
 
 		    	}
-		    	if(JSONObject.NULL.equals(su))
-		    	{
-		    		continue;
-		    		
-		    	}
-		    	else {
 		    		ns.setSummary((String)su);
 		    		
 
-		    	}
-		    	if(JSONObject.NULL.equals(iu))
-		    	{
-		    		continue;
-		    	}
-		    	else
-		    	{
 		    		String imageUrl = (String)iu;
 		    		ns.setImage_url(imageUrl);
 
-		    	}
-		    	if(JSONObject.NULL.equals(ur))
-		    	{
-		    		continue;
-		    	}
-		    	else
-		    	{
 		    		String Url = (String)ur;
 		    		ns.setSource_link(Url);
-		    	}
+		    	
 		    	String pubTime = (String)article.get("publishedAt");
 		    	pubTime = pubTime.split("T")[0];
 		    	
 		        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-mm-dd");
 		        Date pubDate=formatter1.parse(pubTime);  
 		    	ns.setPublish_time(pubDate);
-		    	System.out.println("sss");
+		    	System.out.println(ns.getHeadline());
 		    	newsList.add(ns);
-		    	System.out.println(newsList.size());
 		    	
 		    	}
 		    	catch(Exception e)

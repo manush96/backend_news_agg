@@ -59,13 +59,16 @@ public class NewsSnippetDao {
 	{
 		try {
 			List<NewsSnippet> newsList = sportsFetchUtils.fetchHeadline("us");
-			System.out.println(newsList.size());
 			List<NewsSnippet> existing = (List<NewsSnippet>) newsSnippetRepository.findAll();
 			List<String> titles = new ArrayList<String>();
 			
 			for(int i=0;i< existing.size();i++)
 			{
 				titles.add(existing.get(i).getHeadline());
+			}
+			for(int i=0;i<newsList.size();i++)
+			{
+				System.out.println(newsList.get(i).getHeadline());
 			}
 			for(int i=0;i< newsList.size();i++)
 			{
