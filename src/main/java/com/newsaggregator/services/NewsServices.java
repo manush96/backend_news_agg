@@ -9,6 +9,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,6 +63,28 @@ public class NewsServices {
 	}
 	@GetMapping("/api/admin-login")
 	public List<String> adminLogin(@RequestParam String username,@RequestParam String password)
+	{
+		List<String> resList = new ArrayList<String>();
+		
+		User user = userRepository.findUserByUsername(username).get(0);
+		if(user.getUsername()== null)
+		{
+			resList.add("false");
+			return resList;
+		}
+		else if(user.getPassword().equals(password))
+		{
+			resList.add("true");
+			return resList;
+		}
+		else
+		{
+			resList.add("false");
+			return resList;
+		}
+	}
+	@PostMapping("/api/registration")
+	public List<String> registration(@RequestBody String username,@RequestParam String password)
 	{
 		List<String> resList = new ArrayList<String>();
 		
