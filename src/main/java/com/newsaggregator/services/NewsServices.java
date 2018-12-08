@@ -18,7 +18,7 @@ import com.newsaggregator.repositories.NewsSnippetRepository;
 import com.newsaggregator.repositories.UserRepository;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200", allowCredentials="true", allowedHeaders = "*")
+@CrossOrigin(origins="http://localhost:4200",allowCredentials="true",allowedHeaders = "*")
 public class NewsServices {
 
 	
@@ -80,6 +80,49 @@ public class NewsServices {
 			return resList;
 		}
 	}
+	@GetMapping("/api/findallusers")
+	public List<User> adminSearch()
+	{
+		List<User> users = (List<User>)userRepository.findAll();
+		
+		return users;
+	}
+	@GetMapping("/api/deleteuser")
+	public void deleteUser(@RequestParam String username)
+	{
+		User user = userRepository.findUserByUsername(username).get(0);
+		userRepository.delete(user);
+	}
+	@GetMapping("/api/myfeed")
+	public List<NewsSnippet> myfeed(@RequestParam String username)
+	{
+		User user = userRepository.findUserByUsername(username).get(0);
+		List<String> s = parsePreference(user.getPreference());
+		List<NewsSnippet> x = new ArrayList<>();
+		for (int i = 0; i < s.size(); i++) {
+			switch (s.get(i)) {
+			case "Sport":
+				newsSnippetDao.fetchAndInsertSports();
+				List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Sport");
+				x.addAll(a);
+				break;
+			case "Entertainment":
+				newsSnippetDao.fetchAndInsertEntertainment();
+				a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Entertainment");
+				x.addAll(a);
+				break;
+			case "Science":
+				newsSnippetDao.fetchAndInsertScience();
+				a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Science");
+				x.addAll(a);
+				break;
+			default:
+				break;
+			}
+			
+		}
+		return x;
+	}
 	@GetMapping("/api/sportshome")
 	public List<NewsSnippet> getSportsHome()
 	{
@@ -100,5 +143,9 @@ public class NewsServices {
 		newsSnippetDao.fetchAndInsertScience();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Science");
 		return a;
+	}
+	private List<String> parsePreference(String s) {
+	String sa[] = s.split(",");
+	return Arrays.asList(sa);
 	}
 }
