@@ -21,6 +21,7 @@ public class User {
 	private String password;
 	private String email;
 	private String city;
+	private String preference;
 	
 	public String getFirstname() {
 		return firstname;
@@ -64,6 +65,12 @@ public class User {
 	}
 	public void setCity(String city) {
 		this.city = city;
+	}
+	public String getPreference() {
+		return preference;
+	}
+	public void setPreference(String preference) {
+		this.preference = preference;
 	}
 	
 	
