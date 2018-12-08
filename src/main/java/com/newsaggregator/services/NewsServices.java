@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -64,6 +65,7 @@ public class NewsServices {
 	@GetMapping("/api/admin-login")
 	public List<String> adminLogin(@RequestParam String username,@RequestParam String password)
 	{
+		
 		List<String> resList = new ArrayList<String>();
 		
 		User user = userRepository.findUserByUsername(username).get(0);
@@ -84,26 +86,11 @@ public class NewsServices {
 		}
 	}
 	@PostMapping("/api/registration")
-	public List<String> registration(@RequestBody String username,@RequestParam String password)
+	public void registration(@RequestBody User user)
 	{
-		List<String> resList = new ArrayList<String>();
-		
-		User user = userRepository.findUserByUsername(username).get(0);
-		if(user.getUsername()== null)
-		{
-			resList.add("false");
-			return resList;
-		}
-		else if(user.getPassword().equals(password))
-		{
-			resList.add("true");
-			return resList;
-		}
-		else
-		{
-			resList.add("false");
-			return resList;
-		}
+		User user1 = (User) userRepository.findUserByUsername(user.getUsername());
+		if(user1 == null)
+		userRepository.save(user);
 	}
 	@GetMapping("/api/findallusers")
 	public List<User> adminSearch()
@@ -113,10 +100,11 @@ public class NewsServices {
 		return users;
 	}
 	@GetMapping("/api/deleteuser")
-	public void deleteUser(@RequestParam String username)
+	public void deleteUser(@RequestParam int id)
 	{
-		User user = userRepository.findUserByUsername(username).get(0);
-		userRepository.delete(user);
+		Optional<User> user = userRepository.findById(id);
+	if(user.isPresent())
+		userRepository.delete(user.get());
 	}
 	@GetMapping("/api/myfeed")
 	public List<NewsSnippet> myfeed(@RequestParam String username)

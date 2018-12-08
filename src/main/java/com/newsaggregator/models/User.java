@@ -22,7 +22,7 @@ public class User {
 	private String email;
 	private String city;
 	private String preference;
-	
+	private String dType;
 	public String getFirstname() {
 		return firstname;
 	}
@@ -71,6 +71,12 @@ public class User {
 	}
 	public void setPreference(String preference) {
 		this.preference = preference;
+	}
+	public String getdType() {
+		return dType;
+	}
+	public void setdType(String dType) {
+		this.dType = dType;
 	}
 	
 	
