@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newsaggregator.daos.NewsSnippetDao;
+import com.newsaggregator.models.Admin;
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.models.User;
+import com.newsaggregator.repositories.AdminRepository;
 import com.newsaggregator.repositories.NewsSnippetRepository;
 import com.newsaggregator.repositories.UserRepository;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200", allowCredentials="true", allowedHeaders = "*")
+@CrossOrigin(origins="http://localhost:4200",allowCredentials= "true",allowedHeaders = "*")
 public class NewsServices {
 
 	
@@ -28,7 +30,8 @@ public class NewsServices {
 	NewsSnippetDao newsSnippetDao;
 	@Autowired
 	UserRepository userRepository;
-	
+	@Autowired
+	AdminRepository adminRepository;
 	@GetMapping("/api/newshome")
 	public List<NewsSnippet> getNewsHome()
 	{
@@ -63,13 +66,13 @@ public class NewsServices {
 	{
 		List<String> resList = new ArrayList<String>();
 		
-		User user = userRepository.findUserByUsername(username).get(0);
-		if(user.getUsername()== null)
+		Admin admin = (Admin) adminRepository.findAdminByUsername(username).get(0);
+		if(admin.getUsername()== null)
 		{
 			resList.add("false");
 			return resList;
 		}
-		else if(user.getPassword().equals(password))
+		else if(admin.getPassword().equals(password))
 		{
 			resList.add("true");
 			return resList;
