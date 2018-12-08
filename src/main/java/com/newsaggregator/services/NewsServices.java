@@ -102,7 +102,7 @@ public class NewsServices {
 		}
 		else if(user.getPassword().equals(password))
 		{
-			if(user.getdType()=="agency") {
+			if(user.getdType().equals("agency")) {
 				resList.add("true");
 				return resList;
 			}
