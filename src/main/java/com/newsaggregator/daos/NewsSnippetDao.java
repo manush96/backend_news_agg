@@ -62,7 +62,7 @@ public class NewsSnippetDao {
 	{
 		try {
 			List<NewsSnippet> newsList = sportsFetchUtils.fetchHeadline("us");
-			List<NewsSnippet> existing = (List<NewsSnippet>) newsSnippetRepository.findAll();
+			List<NewsSnippet> existing = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Sports");
 			List<String> titles = new ArrayList<String>();
 			
 			for(int i=0;i< existing.size();i++)
@@ -96,7 +96,37 @@ public class NewsSnippetDao {
 	{
 		try {
 			List<NewsSnippet> newsList = entertainmentFetchUtil.fetchHeadline("us");
-			List<NewsSnippet> existing = (List<NewsSnippet>) newsSnippetRepository.findAll();
+			List<NewsSnippet> existing = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Entertainment");
+			List<String> titles = new ArrayList<String>();
+			
+			for(int i=0;i< existing.size();i++)
+			{
+				titles.add(existing.get(i).getHeadline());
+			}
+			for(int i=0;i< newsList.size();i++)
+			{
+				if(titles.contains(newsList.get(i).getHeadline()))
+				{
+					continue;
+				}
+				else
+				{
+					newsSnippetRepository.save(newsList.get(i));
+				}
+			
+			}
+				
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void fetchAndInsertScience()
+	{
+		try {
+			List<NewsSnippet> newsList = headlinesFetchUtils.fetchScience("us");
+			List<NewsSnippet> existing = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Science");
 			List<String> titles = new ArrayList<String>();
 			
 			for(int i=0;i< existing.size();i++)
