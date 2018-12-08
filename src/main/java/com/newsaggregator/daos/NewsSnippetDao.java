@@ -152,5 +152,35 @@ public class NewsSnippetDao {
 		}
 		
 	}
+	public void fetchAndInsertBusniess()
+	{
+		try {
+			List<NewsSnippet> newsList = headlinesFetchUtils.fetchBusniess("us");
+			List<NewsSnippet> existing = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Busniess");
+			List<String> titles = new ArrayList<String>();
+			
+			for(int i=0;i< existing.size();i++)
+			{
+				titles.add(existing.get(i).getHeadline());
+			}
+			for(int i=0;i< newsList.size();i++)
+			{
+				if(titles.contains(newsList.get(i).getHeadline()))
+				{
+					continue;
+				}
+				else
+				{
+					newsSnippetRepository.save(newsList.get(i));
+				}
+			
+			}
+				
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 }

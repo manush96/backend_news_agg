@@ -157,6 +157,13 @@ public class NewsServices {
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Science");
 		return a;
 	}
+	@GetMapping("/api/busniesshome")
+	public List<NewsSnippet> getBusniessHome()
+	{
+		newsSnippetDao.fetchAndInsertBusniess();
+		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Busniess");
+		return a;
+	}
 	private List<String> parsePreference(String s) {
 	String sa[] = s.split(",");
 	return Arrays.asList(sa);
