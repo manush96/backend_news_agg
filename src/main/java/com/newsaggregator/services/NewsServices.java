@@ -34,10 +34,9 @@ import com.newsaggregator.repositories.News_ownerRepository;
 import com.newsaggregator.repositories.UserRepository;
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200",allowCredentials="true",allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true", allowedHeaders = "*")
 public class NewsServices {
 
-	
 	@Autowired
 	NewsSnippetRepository newsSnippetRepository;
 	@Autowired
@@ -46,166 +45,143 @@ public class NewsServices {
 	UserRepository userRepository;
 	@Autowired
 	News_ownerRepository ownerRepository;
-	
-	
+
 	@Autowired
 	AdvertisementRepository advertRepository;
-	
-	
+
 	@Autowired
 	ContactRepository contactRepository;
-	
+
 	@GetMapping("/api/newshome")
-	public List<NewsSnippet> getNewsHome()
-	{
+	public List<NewsSnippet> getNewsHome() {
 		newsSnippetDao.fetchAndInsertHeadlines();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findAll();
 		return a;
 	}
+
 	// All Login EndPoints
 	@GetMapping("/api/login")
-	public List<String> userLogin(@RequestParam String username,@RequestParam String password)
-	{
+	public List<String> userLogin(@RequestParam String username, @RequestParam String password) {
 		List<String> resList = new ArrayList<String>();
-		
+
 		User user = userRepository.findUserByUsername(username).get(0);
-		if(user.getUsername()== null)
-		{
+		if (user.getUsername() == null) {
 			resList.add("false");
 			return resList;
-		}
-		else if(user.getPassword().equals(password))
-		{
+		} else if (user.getPassword().equals(password)) {
 			resList.add("true");
 			return resList;
-		}
-		else
-		{
+		} else {
 			resList.add("false");
 			return resList;
 		}
 	}
+
 	@GetMapping("/api/admin/login")
-	public List<String> adminLogin(@RequestParam String username,@RequestParam String password)
-	{
-		
+	public List<String> adminLogin(@RequestParam String username, @RequestParam String password) {
+
 		List<String> resList = new ArrayList<String>();
-		
+
 		User user = userRepository.findUserByUsername(username).get(0);
-		if(user.getUsername()== null)
-		{
+		if (user.getUsername() == null) {
 			resList.add("false");
 			return resList;
-		}
-		else if(user.getPassword().equals(password))
-		{
+		} else if (user.getPassword().equals(password)) {
 			resList.add("true");
 			return resList;
-		}
-		else
-		{
+		} else {
 			resList.add("false");
 			return resList;
 		}
 	}
-	
+
 	@GetMapping("/api/agency/login")
-	public List<String> agencyLogin(@RequestParam String username,@RequestParam String password)
-	{
-		
+	public List<String> agencyLogin(@RequestParam String username, @RequestParam String password) {
+
 		List<String> resList = new ArrayList<String>();
-		
+
 		User user = userRepository.findUserByUsername(username).get(0);
-		
-		if(user.getUsername()== null)
-		{
+
+		if (user.getUsername() == null) {
 			resList.add("false");
 			return resList;
-		}
-		else if(user.getPassword().equals(password))
-		{
-			if(user.getdType().equals("agency")) {
+		} else if (user.getPassword().equals(password)) {
+			if (user.getdType().equals("agency")) {
 				resList.add("true");
 				return resList;
-			}
-			else {
+			} else {
 				resList.add("false");
 				return resList;
 			}
-			
-		}
-		else
-		{
+
+		} else {
 			resList.add("false");
 			return resList;
 		}
 	}
-	
-	
-	
+
 	@GetMapping("/api/advert/login")
-	public List<String> advertLogin(@RequestParam String username,@RequestParam String password)
-	{
-		
+	public List<String> advertLogin(@RequestParam String username, @RequestParam String password) {
+
 		List<String> resList = new ArrayList<String>();
-		
+
 		User user = userRepository.findUserByUsername(username).get(0);
-		
-		if(user.getUsername()== null)
-		{
+
+		if (user.getUsername() == null) {
 			resList.add("false");
 			return resList;
-		}
-		else if(user.getPassword().equals(password))
-		{
-			if(user.getdType().equals("advertiser")) {
+		} else if (user.getPassword().equals(password)) {
+			if (user.getdType().equals("advertiser")) {
 				resList.add("true");
 				return resList;
-			}
-			else {
+			} else {
 				resList.add("false");
 				return resList;
 			}
-			
-		}
-		else
-		{
+
+		} else {
 			resList.add("false");
 			return resList;
 		}
 	}
-	//End of Login Endpoints
-	
-	//All find EndPoints
+	// End of Login Endpoints
+
+	// All find EndPoints
 	@GetMapping("/api/user/findOne")
-	public User findOne(@RequestParam String username)
-	{
+	public User findOne(@RequestParam String username) {
 		User user = new User();
 		user = (User) userRepository.findUserByUsername(username).get(0);
 		return user;
 	}
-	
+
 	@GetMapping("/api/findallusers")
-	public List<User> adminSearch()
-	{
-		List<User> users = (List<User>)userRepository.findAll();
-		
+	public List<User> adminSearch() {
+		List<User> users = (List<User>) userRepository.findAll();
 		return users;
 	}
-//	@GetMapping("/api/news/findallusers")
-//	public List<NewsSnippet> newsSearchByAgency()
-//	{
-//		
-//	}
-	
-	//End of Find Endpoints
-	
+
+	@GetMapping("/api/agency/findByAgency")
+	public List<NewsSnippet> newsSearchByAgency() {
+		List<NewsSnippet> c =newsSnippetRepository.getNewsSnippetByAgency();
+		if(c.size()>0) {
+			return c;
+		}
+		else {
+			c = new ArrayList<NewsSnippet>();
+			NewsSnippet e = new NewsSnippet();
+			e.setHeadline("There is no data here!!");
+			c.add(e);
+			return c;
+		}
+	}
+
+	// End of Find Endpoints
+
 	// All Insert Endpoints.
-	@PostMapping(path = "/api/registration",consumes = "application/json")
-	public void registration(@RequestBody Object user)
-	{
-		System.out.println(user.getClass()); 
-	
+	@PostMapping(path = "/api/registration", consumes = "application/json")
+	public void registration(@RequestBody Object user) {
+		System.out.println(user.getClass());
+
 		System.out.println(((java.util.LinkedHashMap) user).get("firstname"));
 		User user1 = new User();
 		user1.setFirstname(((java.util.LinkedHashMap) user).get("firstname").toString());
@@ -216,20 +192,20 @@ public class NewsServices {
 		user1.setEmail(((java.util.LinkedHashMap) user).get("email").toString());
 		userRepository.save(user1);
 	}
-	
-	//End of Insert Endpoints
+
+	// End of Insert Endpoints
 	@GetMapping("/api/deleteuser")
-	public void deleteUser(@RequestParam int id)
-	{
+	public void deleteUser(@RequestParam int id) {
 		Optional<User> user = userRepository.findById(id);
-	if(user.isPresent())
-		userRepository.delete(user.get());
+		if (user.isPresent())
+			userRepository.delete(user.get());
 	}
+
 	@RequestMapping(value = "/api/deleteNews/{id}", method = RequestMethod.DELETE)
-	public void deleteNews(@PathVariable("id") int itemId)
-	{
-		newsSnippetRepository.deleteById(itemId); 
+	public void deleteNews(@PathVariable("id") int itemId) {
+		newsSnippetRepository.deleteById(itemId);
 	}
+
 //	@PutMapping("/api/user/update")
 //	public void deleteUser(@RequestParam User user)
 //	{
@@ -238,8 +214,7 @@ public class NewsServices {
 //		userRepository.delete(user.get());
 //	}
 	@GetMapping("/api/myfeed")
-	public List<NewsSnippet> myfeed(@RequestParam String username)
-	{
+	public List<NewsSnippet> myfeed(@RequestParam String username) {
 		User user = userRepository.findUserByUsername(username).get(0);
 		List<String> s = parsePreference(user.getPreference());
 		List<NewsSnippet> x = new ArrayList<>();
@@ -263,53 +238,53 @@ public class NewsServices {
 			default:
 				break;
 			}
-			
+
 		}
 		return x;
 	}
+
 	@GetMapping("/api/news/findone")
-	public NewsSnippet getNews(@RequestParam int id)
-	{
+	public NewsSnippet getNews(@RequestParam int id) {
 		Optional<NewsSnippet> x = newsSnippetRepository.findById(id);
-		if(x.isPresent()) {
+		if (x.isPresent()) {
 			return x.get();
-		}else {
+		} else {
 			NewsSnippet y = new NewsSnippet();
 			y.setHeadline("News Not Found");
 			return y;
 		}
 	}
+
 	@PostMapping("/api/news/insert")
-	public String insertNews(@RequestBody Object news)
-	{
+	public String insertNews(@RequestBody Object news) {
 		NewsSnippet user1 = new NewsSnippet();
 		user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
 		user1.setImage_url(((java.util.LinkedHashMap) news).get("imgUrl").toString());
 		user1.setSummary(((java.util.LinkedHashMap) news).get("desc").toString());
 		user1.setSource_link(((java.util.LinkedHashMap) news).get("newsUrl").toString());
 		user1.setFullStory(((java.util.LinkedHashMap) news).get("story").toString());
-		
+
 		News_owner x = new News_owner();
 		List<User> user = userRepository.findUserByUsername(((java.util.LinkedHashMap) news).get("source").toString());
-		if(user.size()>0) {
+		if (user.size() > 0) {
 			newsSnippetRepository.save(user1);
-			
+
 			x.setUser(user.get(0));
 			x.setNews(user1);
 			ownerRepository.save(x);
 			return "successful";
-		}else {
+		} else {
 			return "unsuccessful";
 		}
-		
+
 	}
+
 	@PostMapping("/api/news/update")
-	public String updateNews(@RequestBody Object news)
-	{
-		
-		Optional<NewsSnippet> x = newsSnippetRepository.findById(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
-		if(x.isPresent())
-		{	
+	public String updateNews(@RequestBody Object news) {
+
+		Optional<NewsSnippet> x = newsSnippetRepository
+				.findById(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
+		if (x.isPresent()) {
 			newsSnippetRepository.deleteById(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
 			NewsSnippet user1 = new NewsSnippet();
 			user1.setId(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
@@ -320,18 +295,18 @@ public class NewsServices {
 			user1.setFullStory(((java.util.LinkedHashMap) news).get("story").toString());
 			newsSnippetRepository.save(user1);
 			return "Successful";
-		}else {
+		} else {
 			return "news does not exist";
 		}
-		
+
 	}
+
 	@PostMapping("/api/user/update")
-	public String updateUser(@RequestBody Object user)
-	{
-		
-		Optional<User> x = userRepository.findById(Integer.parseInt(((java.util.LinkedHashMap) user).get("id").toString()));
-		if(x.isPresent())
-		{	
+	public String updateUser(@RequestBody Object user) {
+
+		Optional<User> x = userRepository
+				.findById(Integer.parseInt(((java.util.LinkedHashMap) user).get("id").toString()));
+		if (x.isPresent()) {
 			newsSnippetRepository.deleteById(Integer.parseInt(((java.util.LinkedHashMap) user).get("id").toString()));
 			User user1 = new User();
 			user1.setId(Integer.parseInt(((java.util.LinkedHashMap) user).get("id").toString()));
@@ -344,78 +319,66 @@ public class NewsServices {
 			user1.setdType("reader");
 			userRepository.save(user1);
 			return "Successful";
-		}else {
+		} else {
 			return "news does not exist";
 		}
-		
+
 	}
-	
-	
+
 	@PostMapping("/api/contact/insert")
-	public void insertContact(@RequestBody Object cont)
-	{
-		
-			
-			Contact user1 = new Contact();
-			user1.setEmail(((java.util.LinkedHashMap) cont).get("email").toString());
-			user1.setMessage(((java.util.LinkedHashMap) cont).get("message").toString());
-			user1.setName(((java.util.LinkedHashMap) cont).get("name").toString());
-			contactRepository.save(user1);
-		
-		
+	public void insertContact(@RequestBody Object cont) {
+
+		Contact user1 = new Contact();
+		user1.setEmail(((java.util.LinkedHashMap) cont).get("email").toString());
+		user1.setMessage(((java.util.LinkedHashMap) cont).get("message").toString());
+		user1.setName(((java.util.LinkedHashMap) cont).get("name").toString());
+		contactRepository.save(user1);
+
 	}
-	
-	
+
 	@GetMapping("/api/sportshome")
-	public List<NewsSnippet> getSportsHome()
-	{
+	public List<NewsSnippet> getSportsHome() {
 		newsSnippetDao.fetchAndInsertSports();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Sport");
 		return a;
 	}
+
 	@GetMapping("/api/entertainmenthome")
-	public List<NewsSnippet> getEntertainmentHome()
-	{
+	public List<NewsSnippet> getEntertainmentHome() {
 		newsSnippetDao.fetchAndInsertEntertainment();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Entertainment");
 		return a;
 	}
+
 	@GetMapping("/api/sciencehome")
-	public List<NewsSnippet> getSpringHome()
-	{
+	public List<NewsSnippet> getSpringHome() {
 		newsSnippetDao.fetchAndInsertScience();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Science");
 		return a;
 	}
+
 	@GetMapping("/api/busniesshome")
-	public List<NewsSnippet> getBusniessHome()
-	{
+	public List<NewsSnippet> getBusniessHome() {
 		newsSnippetDao.fetchAndInsertBusniess();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Busniess");
 		return a;
 	}
-	
-	
+
 	@PostMapping("/api/advertisement")
-	public String insertAdvert(@RequestBody Object ad)
-	{
-		
-		
+	public String insertAdvert(@RequestBody Object ad) {
+
 		Advertisement user1 = new Advertisement();
 		user1.setFull_link(((java.util.LinkedHashMap) ad).get("full_link").toString());
 		user1.setTitle(((java.util.LinkedHashMap) ad).get("title").toString());
 		user1.setImg_url(((java.util.LinkedHashMap) ad).get("image_url").toString());
 		advertRepository.save(user1);
-		
-		
+
 		return "succcess";
 	}
-	
-	
-	
+
 	private List<String> parsePreference(String s) {
-	String sa[] = s.split(",");
-	return Arrays.asList(sa);
+		String sa[] = s.split(",");
+		return Arrays.asList(sa);
 	}
 //	private User parseJSON(String s) {
 //		s = s.substring(1, s.length()-1);
