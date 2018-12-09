@@ -147,11 +147,11 @@ public class NewsServices {
 		
 		return users;
 	}
-	@GetMapping("/api/news/findallusers")
-	public List<NewsSnippet> newsSearchByAgency()
-	{
-		
-	}
+//	@GetMapping("/api/news/findallusers")
+//	public List<NewsSnippet> newsSearchByAgency()
+//	{
+//		
+//	}
 	
 	//End of Find Endpoints
 	
