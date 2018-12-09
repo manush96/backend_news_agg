@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newsaggregator.daos.NewsSnippetDao;
+import com.newsaggregator.models.Contact;
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.models.News_owner;
 import com.newsaggregator.models.User;
+import com.newsaggregator.repositories.ContactRepository;
 import com.newsaggregator.repositories.NewsSnippetRepository;
 import com.newsaggregator.repositories.News_ownerRepository;
 import com.newsaggregator.repositories.UserRepository;
@@ -43,6 +45,10 @@ public class NewsServices {
 	@Autowired
 	News_ownerRepository ownerRepository;
 	
+	
+	
+	@Autowired
+	ContactRepository contactRepository;
 	
 	@GetMapping("/api/newshome")
 	public List<NewsSnippet> getNewsHome()
@@ -248,8 +254,10 @@ public class NewsServices {
 		List<User> user = userRepository.findUserByUsername(((java.util.LinkedHashMap) news).get("source").toString());
 		if(user.size()>0) {
 			newsSnippetRepository.save(user1);
+			
 			x.setUser(user.get(0));
 			x.setNews(user1);
+			ownerRepository.save(x);
 			return "successful";
 		}else {
 			return "unsuccessful";
@@ -302,6 +310,23 @@ public class NewsServices {
 		}
 		
 	}
+	
+	
+	@PostMapping("/api/contact/insert")
+	public void insertContact(@RequestBody Object cont)
+	{
+		
+			
+			Contact user1 = new Contact();
+			user1.setEmail(((java.util.LinkedHashMap) cont).get("email").toString());
+			user1.setMessage(((java.util.LinkedHashMap) cont).get("message").toString());
+			user1.setName(((java.util.LinkedHashMap) cont).get("name").toString());
+			contactRepository.save(user1);
+		
+		
+	}
+	
+	
 	@GetMapping("/api/sportshome")
 	public List<NewsSnippet> getSportsHome()
 	{
@@ -330,6 +355,9 @@ public class NewsServices {
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Busniess");
 		return a;
 	}
+	
+	
+	
 	private List<String> parsePreference(String s) {
 	String sa[] = s.split(",");
 	return Arrays.asList(sa);

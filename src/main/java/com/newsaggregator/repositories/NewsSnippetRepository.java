@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.newsaggregator.models.NewsSnippet;
 
-import edu.northeastern.cs5200.models.Enrollment;
 
 
 
