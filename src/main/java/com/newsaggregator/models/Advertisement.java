@@ -1,9 +1,13 @@
 package com.newsaggregator.models;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +24,8 @@ public class Advertisement {
 	private String title;
 	private String img_url;
 	private String full_link;
+	@OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE)
+	private List<Advertiser> advertiser;
 	public int getId() {
 		return id;
 	}

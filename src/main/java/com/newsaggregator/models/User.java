@@ -29,6 +29,8 @@ public class User {
 	private String dType;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<News_owner> newsOwner;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<Advertiser> advertiser;
 	public String getFirstname() {
 		return firstname;
 	}
@@ -83,6 +85,12 @@ public class User {
 	}
 	public void setdType(String dType) {
 		this.dType = dType;
+	}
+	public List<Advertiser> getAdvertiser() {
+		return advertiser;
+	}
+	public void setAdvertiser(List<Advertiser> advertiser) {
+		this.advertiser = advertiser;
 	}
 	
 	

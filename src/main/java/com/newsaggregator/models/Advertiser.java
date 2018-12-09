@@ -1,10 +1,12 @@
 package com.newsaggregator.models;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class Advertiser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,7 +14,7 @@ public class Advertiser {
 	@ManyToOne()
 	private User user;
 	@ManyToOne()
-	private NewsSnippet news;
+	private Advertisement ad;
 	public int getId() {
 		return id;
 	}
@@ -25,10 +27,11 @@ public class Advertiser {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public NewsSnippet getNews() {
-		return news;
+	public Advertisement getAd() {
+		return ad;
 	}
-	public void setNews(NewsSnippet news) {
-		this.news = news;
+	public void setAd(Advertisement ad) {
+		this.ad = ad;
 	}
+
 }
