@@ -135,6 +135,40 @@ public class NewsServices {
 			return resList;
 		}
 	}
+	
+	
+	
+	@GetMapping("/api/advert/login")
+	public List<String> advertLogin(@RequestParam String username,@RequestParam String password)
+	{
+		
+		List<String> resList = new ArrayList<String>();
+		
+		User user = userRepository.findUserByUsername(username).get(0);
+		
+		if(user.getUsername()== null)
+		{
+			resList.add("false");
+			return resList;
+		}
+		else if(user.getPassword().equals(password))
+		{
+			if(user.getdType().equals("advertiser")) {
+				resList.add("true");
+				return resList;
+			}
+			else {
+				resList.add("false");
+				return resList;
+			}
+			
+		}
+		else
+		{
+			resList.add("false");
+			return resList;
+		}
+	}
 	//End of Login Endpoints
 	
 	//All find EndPoints
