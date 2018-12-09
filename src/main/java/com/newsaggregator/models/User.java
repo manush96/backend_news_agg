@@ -1,5 +1,7 @@
 package com.newsaggregator.models;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +28,7 @@ public class User {
 	private String preference;
 	private String dType;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private News_owner newsOwner;
+	private List<News_owner> newsOwner;
 	public String getFirstname() {
 		return firstname;
 	}

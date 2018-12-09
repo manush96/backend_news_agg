@@ -1,6 +1,7 @@
 package com.newsaggregator.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,8 +27,9 @@ public class NewsSnippet {
 	private String source_link;
 	private String category;
 	private String fullStory;
+	
 	@OneToMany(mappedBy = "news", cascade = CascadeType.REMOVE)
-	private News_owner publisher;
+	private List<News_owner> publisher;
 	
 	
 	public String getSource_link() {
