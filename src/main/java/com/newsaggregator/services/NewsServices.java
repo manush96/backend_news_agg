@@ -214,6 +214,18 @@ public class NewsServices {
 			return y;
 		}
 	}
+	@GetMapping("/api/news/insert")
+	public void insertNews(@RequestParam Object news)
+	{
+		NewsSnippet user1 = new NewsSnippet();
+		user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
+		user1.setImage_url(((java.util.LinkedHashMap) news).get("imgUrl").toString());
+		user1.setSummary(((java.util.LinkedHashMap) news).get("desc").toString());
+		user1.setSource_link(((java.util.LinkedHashMap) news).get("newsUrl").toString());
+		user1.setFullStory(((java.util.LinkedHashMap) news).get("story").toString());
+		
+		newsSnippetRepository.save(user1);
+	}
 	@GetMapping("/api/sportshome")
 	public List<NewsSnippet> getSportsHome()
 	{
