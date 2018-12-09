@@ -234,7 +234,7 @@ public class NewsServices {
 		
 		newsSnippetRepository.save(user1);
 	}
-	@PutMapping("/api/news/update")
+	@PostMapping("/api/news/update")
 	public String updateNews(@RequestBody Object news)
 	{
 		
@@ -243,6 +243,7 @@ public class NewsServices {
 		{	
 			newsSnippetRepository.deleteById(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
 			NewsSnippet user1 = new NewsSnippet();
+			user1.setId(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
 			user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
 			user1.setImage_url(((java.util.LinkedHashMap) news).get("imgUrl").toString());
 			user1.setSummary(((java.util.LinkedHashMap) news).get("desc").toString());
