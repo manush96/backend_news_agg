@@ -313,13 +313,15 @@ public class NewsServices {
 	}
 	@PostMapping("/api/advert/update")
 	public String updateAdvertisment(@RequestBody Object advertisement) {
+		System.out.println(advertisement.toString());
 		Optional<Advertisement> x = advertRepository
 				.findById(Integer.parseInt(((java.util.LinkedHashMap) advertisement).get("id").toString()));
+		System.out.println(x.isPresent());
 		if (x.isPresent()) {
 			advertRepository.deleteById(Integer.parseInt(((java.util.LinkedHashMap) advertisement).get("id").toString()));
 			Advertisement a = new Advertisement();
 			a.setId(Integer.parseInt(((java.util.LinkedHashMap) advertisement).get("id").toString()));
-			a.setFull_link(((java.util.LinkedHashMap) advertisement).get("Full_Link").toString());
+			a.setFull_link(((java.util.LinkedHashMap) advertisement).get("full_link").toString());
 			a.setImg_url(((java.util.LinkedHashMap) advertisement).get("img_url").toString());
 			a.setTitle(((java.util.LinkedHashMap) advertisement).get("title").toString());
 			advertRepository.save(a);
@@ -402,6 +404,16 @@ public class NewsServices {
 		newsSnippetDao.fetchAndInsertBusniess();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Busniess");
 		return a;
+	}
+	
+	
+	@GetMapping("/api/advert/findOne")
+	public Advertisement findOne(@RequestParam int id)
+	{
+		System.out.println(id+"heheheh");
+		Advertisement user = new Advertisement();
+		user = (Advertisement) advertRepository.findById(id).get();
+		return user;
 	}
 
 	private List<String> parsePreference(String s) {
