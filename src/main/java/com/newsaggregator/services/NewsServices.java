@@ -256,6 +256,30 @@ public class NewsServices {
 		}
 		
 	}
+	@PostMapping("/api/user/update")
+	public String updateUser(@RequestBody Object user)
+	{
+		
+		Optional<User> x = userRepository.findById(Integer.parseInt(((java.util.LinkedHashMap) user).get("id").toString()));
+		if(x.isPresent())
+		{	
+			newsSnippetRepository.deleteById(Integer.parseInt(((java.util.LinkedHashMap) user).get("id").toString()));
+			User user1 = new User();
+			user1.setId(Integer.parseInt(((java.util.LinkedHashMap) user).get("id").toString()));
+			user1.setFirstname(((java.util.LinkedHashMap) user).get("firstname").toString());
+			user1.setLastname(((java.util.LinkedHashMap) user).get("lastname").toString());
+			user1.setUsername(((java.util.LinkedHashMap) user).get("username").toString());
+			user1.setPassword(((java.util.LinkedHashMap) user).get("password").toString());
+			user1.setEmail(((java.util.LinkedHashMap) user).get("email").toString());
+			user1.setPreference(((java.util.LinkedHashMap) user).get("pref").toString());
+			user1.setdType("reader");
+			userRepository.save(user1);
+			return "Successful";
+		}else {
+			return "news does not exist";
+		}
+		
+	}
 	@GetMapping("/api/sportshome")
 	public List<NewsSnippet> getSportsHome()
 	{
