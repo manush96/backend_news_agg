@@ -44,45 +44,27 @@ public class EntertainmentFetchUtil {
 		    	Object iu = (Object) article.get("urlToImage");
 		    	Object su = (Object) article.get("description");
 		    	Object ur = (Object) article.get("url");
+		    	Object fs = (Object) article.get("content");
 		    	
 		    	
-		    	if(JSONObject.NULL.equals(hl))
-		    	{
-		    		continue;
-		    	}
-		    	else {
 		    			ns.setHeadline((String)hl);
 
-		    	}
-		    	if(JSONObject.NULL.equals(su))
-		    	{
-		    		continue;
-		    		
-		    	}
-		    	else {
+		    	
 		    		ns.setSummary((String)su	);
 		    		
 
-		    	}
-		    	if(JSONObject.NULL.equals(iu))
-		    	{
-		    		continue;
-		    	}
-		    	else
-		    	{
+		    	
+		    	
 		    		String imageUrl = (String)iu;
 		    		ns.setImage_url(imageUrl);
 
-		    	}
-		    	if(JSONObject.NULL.equals(ur))
-		    	{
-		    		continue;
-		    	}
-		    	else
-		    	{
+		    	
 		    		String Url = (String)ur;
 		    		ns.setSource_link(Url);
-		    	}
+		    		
+			    	String content = (String) fs;
+		    		ns.setFullStory(content);
+		    	
 		    	String pubTime = (String)article.get("publishedAt");
 		    	pubTime = pubTime.split("T")[0];
 		    	

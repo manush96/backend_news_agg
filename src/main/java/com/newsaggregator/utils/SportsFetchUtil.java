@@ -47,7 +47,7 @@ public class SportsFetchUtil {
 		    	Object iu = (Object) article.get("urlToImage");
 		    	Object su = (Object) article.get("description");
 		    	Object ur = (Object) article.get("url");
-		    	
+		    	Object fs = (Object) article.get("content");
 		    	
 		    	if(JSONObject.NULL.equals(hl))
 		    	{
@@ -66,14 +66,15 @@ public class SportsFetchUtil {
 
 		    		String Url = (String)ur;
 		    		ns.setSource_link(Url);
-		    	
+		    		
+			    	String content = (String) fs;
+		    		ns.setFullStory(content);
 		    	String pubTime = (String)article.get("publishedAt");
 		    	pubTime = pubTime.split("T")[0];
 		    	
 		        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-mm-dd");
 		        Date pubDate=formatter1.parse(pubTime);  
 		    	ns.setPublish_time(pubDate);
-		    	System.out.println(ns.getHeadline());
 		    	newsList.add(ns);
 		    	
 		    	}

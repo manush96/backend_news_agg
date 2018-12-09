@@ -47,7 +47,7 @@ public class HeadlineFetchUtil {
 	    	Object iu = (Object) article.get("urlToImage");
 	    	Object su = (Object) article.get("description");
 	    	Object ur = (Object) article.get("url");
-	    	
+	    	Object fs = (Object) article.get("content");
 	    	
 	    	if(JSONObject.NULL.equals(hl))
 	    	{
@@ -66,6 +66,8 @@ public class HeadlineFetchUtil {
 
 	    		String Url = (String)ur;
 	    		ns.setSource_link(Url);
+	    		String content = (String) fs;
+	    		ns.setFullStory(content);
 	    	String pubTime = (String)article.get("publishedAt");
 	    	pubTime = pubTime.split("T")[0];
 	    	
@@ -115,7 +117,7 @@ public class HeadlineFetchUtil {
 	    	Object iu = (Object) article.get("urlToImage");
 	    	Object su = (Object) article.get("description");
 	    	Object ur = (Object) article.get("url");
-	    	
+	    	Object fs = (Object) article.get("content");
 	    	
 	    	if(JSONObject.NULL.equals(hl))
 	    	{
@@ -134,6 +136,9 @@ public class HeadlineFetchUtil {
 
 	    		String Url = (String)ur;
 	    		ns.setSource_link(Url);
+	    		
+		    	String content = (String) fs;
+	    		ns.setFullStory(content);
 	    	String pubTime = (String)article.get("publishedAt");
 	    	pubTime = pubTime.split("T")[0];
 	    	
@@ -183,7 +188,7 @@ public class HeadlineFetchUtil {
 	    	Object iu = (Object) article.get("urlToImage");
 	    	Object su = (Object) article.get("description");
 	    	Object ur = (Object) article.get("url");
-	    	
+	    	Object fs = (Object) article.get("content");
 	    	
 	    	if(JSONObject.NULL.equals(hl))
 	    	{
@@ -202,6 +207,9 @@ public class HeadlineFetchUtil {
 
 	    		String Url = (String)ur;
 	    		ns.setSource_link(Url);
+	    		
+		    	String content = (String) fs;
+	    		ns.setFullStory(content);
 	    	String pubTime = (String)article.get("publishedAt");
 	    	pubTime = pubTime.split("T")[0];
 	    	
