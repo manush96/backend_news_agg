@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,6 +175,24 @@ public class NewsServices {
 			return c;
 		}
 	}
+	@GetMapping("/api/advert/find")
+	public List<Advertisement> findAdvert() {
+		List<Advertisement> x  = (List<Advertisement>) advertRepository.findAll();
+		if(x.size()>0) {
+			List<Advertisement> c  = new ArrayList<>();
+			Random rand = new Random();
+			for (int j=0;j < 5;j++)
+			{
+				c.add(x.get(rand.nextInt(x.size())));
+			}
+			return c;
+		}else {
+			Advertisement a = new Advertisement();
+			a.setTitle("there are no advertisements");
+			x.add(a);
+			return x;
+		}
+	}
 
 	// End of Find Endpoints
 
@@ -278,6 +297,18 @@ public class NewsServices {
 		}
 
 	}
+	@PostMapping("/api/advert/insert")
+	public String insertAdvert(@RequestBody Object ad) {
+
+		Advertisement user1 = new Advertisement();
+		user1.setFull_link(((java.util.LinkedHashMap) ad).get("full_link").toString());
+		user1.setTitle(((java.util.LinkedHashMap) ad).get("title").toString());
+		user1.setImg_url(((java.util.LinkedHashMap) ad).get("image_url").toString());
+		advertRepository.save(user1);
+		
+
+		return "succcess";
+	}
 
 	@PostMapping("/api/news/update")
 	public String updateNews(@RequestBody Object news) {
@@ -324,6 +355,7 @@ public class NewsServices {
 		}
 
 	}
+	
 
 	@PostMapping("/api/contact/insert")
 	public void insertContact(@RequestBody Object cont) {
@@ -364,17 +396,7 @@ public class NewsServices {
 		return a;
 	}
 
-	@PostMapping("/api/advertisement")
-	public String insertAdvert(@RequestBody Object ad) {
 
-		Advertisement user1 = new Advertisement();
-		user1.setFull_link(((java.util.LinkedHashMap) ad).get("full_link").toString());
-		user1.setTitle(((java.util.LinkedHashMap) ad).get("title").toString());
-		user1.setImg_url(((java.util.LinkedHashMap) ad).get("image_url").toString());
-		advertRepository.save(user1);
-
-		return "succcess";
-	}
 
 	private List<String> parsePreference(String s) {
 		String sa[] = s.split(",");
