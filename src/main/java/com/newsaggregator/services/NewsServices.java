@@ -340,7 +340,7 @@ public class NewsServices {
 				List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Sport");
 				Collections.reverse(a);
 				for (int j = 0; j < 5; j++) {
-					x.add(a.get(i));
+					x.add(a.get(j));
 				}
 				break;
 			case "Entertainment":
