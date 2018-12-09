@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newsaggregator.daos.NewsSnippetDao;
+import com.newsaggregator.models.Advertisement;
 import com.newsaggregator.models.Contact;
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.models.News_owner;
 import com.newsaggregator.models.User;
+import com.newsaggregator.repositories.AdvertisementRepository;
 import com.newsaggregator.repositories.ContactRepository;
 import com.newsaggregator.repositories.NewsSnippetRepository;
 import com.newsaggregator.repositories.News_ownerRepository;
@@ -45,6 +47,9 @@ public class NewsServices {
 	@Autowired
 	News_ownerRepository ownerRepository;
 	
+	
+	@Autowired
+	AdvertisementRepository advertRepository;
 	
 	
 	@Autowired
@@ -388,6 +393,22 @@ public class NewsServices {
 		newsSnippetDao.fetchAndInsertBusniess();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Busniess");
 		return a;
+	}
+	
+	
+	@PostMapping("/api/advertisement")
+	public String insertAdvert(@RequestBody Object ad)
+	{
+		
+		
+		Advertisement user1 = new Advertisement();
+		user1.setFull_link(((java.util.LinkedHashMap) ad).get("full_link").toString());
+		user1.setTitle(((java.util.LinkedHashMap) ad).get("title").toString());
+		user1.setImg_url(((java.util.LinkedHashMap) ad).get("image_url").toString());
+		advertRepository.save(user1);
+		
+		
+		return "succcess";
 	}
 	
 	
