@@ -2,6 +2,7 @@ package com.newsaggregator.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
@@ -210,6 +211,7 @@ public class NewsServices {
 	@PostMapping("/api/news/insert")
 	public String insertNews(@RequestBody Object news) {
 		NewsSnippet user1 = new NewsSnippet();
+		user1.setId(1);
 		user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
 		user1.setImage_url(((java.util.LinkedHashMap) news).get("imgUrl").toString());
 		user1.setSummary(((java.util.LinkedHashMap) news).get("desc").toString());
@@ -264,27 +266,10 @@ public class NewsServices {
 		Optional<NewsSnippet> x = newsSnippetRepository
 				.findById(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
 		if (x.isPresent()) {
-			
-			newsSnippetRepository.deleteById(x.get().getId());
-			NewsSnippet user1 = new NewsSnippet();
-			user1.setId(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
-			user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
-			user1.setImage_url(((java.util.LinkedHashMap) news).get("imgUrl").toString());
-			user1.setSummary(((java.util.LinkedHashMap) news).get("desc").toString());
-			user1.setSource_link(((java.util.LinkedHashMap) news).get("newsUrl").toString());
-			user1.setFullStory(((java.util.LinkedHashMap) news).get("story").toString());
-			
-			News_owner xy = new News_owner();
-			List<User> user = userRepository.findUserByUsername(((java.util.LinkedHashMap) news).get("source").toString());
-			if (user.size() > 0) {
-				newsSnippetRepository.save(user1);
-				xy.setUser(user.get(0));
-				xy.setNews(user1);
-				ownerRepository.save(xy);
-				return "successful";
-			} else {
-				return "unsuccessful";
-			}
+			LinkedHashMap l = new LinkedHashMap<>();
+			l = (LinkedHashMap)news;
+			newsSnippetRepository.updateNewsSnippet(l.get("title").toString(), l.get("imgUrl").toString(),l.get("desc").toString(), l.get("newsUrl").toString(), l.get("story").toString(), Integer.parseInt(l.get("id").toString()));
+			return "successful";
 		}else {
 			return "News does not exist";
 		}
@@ -313,18 +298,12 @@ public class NewsServices {
 	}
 	@PostMapping("/api/advert/update")
 	public String updateAdvertisment(@RequestBody Object advertisement) {
-		System.out.println(advertisement.toString());
 		Optional<Advertisement> x = advertRepository
 				.findById(Integer.parseInt(((java.util.LinkedHashMap) advertisement).get("id").toString()));
-		System.out.println(x.isPresent());
 		if (x.isPresent()) {
-			advertRepository.deleteById(Integer.parseInt(((java.util.LinkedHashMap) advertisement).get("id").toString()));
-			Advertisement a = new Advertisement();
-			a.setId(Integer.parseInt(((java.util.LinkedHashMap) advertisement).get("id").toString()));
-			a.setFull_link(((java.util.LinkedHashMap) advertisement).get("full_link").toString());
-			a.setImg_url(((java.util.LinkedHashMap) advertisement).get("img_url").toString());
-			a.setTitle(((java.util.LinkedHashMap) advertisement).get("title").toString());
-			advertRepository.save(a);
+			LinkedHashMap l = new LinkedHashMap<>();
+			l = (LinkedHashMap)advertisement;
+			advertRepository.updateAdvertiser(l.get("full_link").toString(), l.get("img_url").toString(), l.get("title").toString(), Integer.parseInt(l.get("id").toString()));
 			return "Successful";
 		} else {
 			return "news does not exist";
@@ -359,17 +338,24 @@ public class NewsServices {
 			case "Sport":
 				newsSnippetDao.fetchAndInsertSports();
 				List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Sport");
-				x.addAll(a);
+				Collections.reverse(a);
+				for (int j = 0; j < 5; j++) {
+					x.add(a.get(i));
+				}
 				break;
 			case "Entertainment":
 				newsSnippetDao.fetchAndInsertEntertainment();
 				a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Entertainment");
-				x.addAll(a);
+				for (int j = 0; j < 5; j++) {
+					x.add(a.get(i));
+				}
 				break;
 			case "Science":
 				newsSnippetDao.fetchAndInsertScience();
 				a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Science");
-				x.addAll(a);
+				for (int j = 0; j < 5; j++) {
+					x.add(a.get(i));
+				}
 				break;
 			default:
 				break;
