@@ -161,8 +161,8 @@ public class NewsServices {
 	}
 
 	@GetMapping("/api/agency/findByAgency")
-	public List<NewsSnippet> newsSearchByAgency() {
-		List<NewsSnippet> c =newsSnippetRepository.getNewsSnippetByAgency();
+	public List<NewsSnippet> newsSearchByAgency(@RequestParam String username) {
+		List<NewsSnippet> c =newsSnippetRepository.getNewsSnippetByAgency(username);
 		if(c.size()>0) {
 			return c;
 		}
