@@ -202,6 +202,18 @@ public class NewsServices {
 		}
 		return x;
 	}
+	@GetMapping("/api/news/findone")
+	public NewsSnippet getNews(@RequestParam int id)
+	{
+		Optional<NewsSnippet> x = newsSnippetRepository.findById(id);
+		if(x.isPresent()) {
+			return x.get();
+		}else {
+			NewsSnippet y = new NewsSnippet();
+			y.setHeadline("News Not Found");
+			return y;
+		}
+	}
 	@GetMapping("/api/sportshome")
 	public List<NewsSnippet> getSportsHome()
 	{
