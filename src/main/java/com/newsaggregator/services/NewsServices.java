@@ -245,12 +245,14 @@ public class NewsServices {
 		user1.setFullStory(((java.util.LinkedHashMap) news).get("story").toString());
 		
 		News_owner x = new News_owner();
-		Optional<User> user = userRepository.findById(Integer.parseInt(((java.util.LinkedHashMap) news).get("source").toString()));
-		if(user.isPresent()) {
+		List<User> user = userRepository.findUserByUsername(((java.util.LinkedHashMap) news).get("source").toString());
+		if(user.size()>0) {
 			newsSnippetRepository.save(user1);
-			x.setUser(user.get());
+			x.setUser(user.get(0));
 			x.setNews(user1);
-			
+			return "successful";
+		}else {
+			return "unsuccessful";
 		}
 		
 	}
