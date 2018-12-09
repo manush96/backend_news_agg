@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.newsaggregator.daos.NewsSnippetDao;
 import com.newsaggregator.models.NewsSnippet;
+import com.newsaggregator.models.News_owner;
 import com.newsaggregator.models.User;
 import com.newsaggregator.repositories.NewsSnippetRepository;
+import com.newsaggregator.repositories.News_ownerRepository;
 import com.newsaggregator.repositories.UserRepository;
 
 @RestController
@@ -38,6 +40,9 @@ public class NewsServices {
 	NewsSnippetDao newsSnippetDao;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	News_ownerRepository ownerRepository;
+	
 	
 	@GetMapping("/api/newshome")
 	public List<NewsSnippet> getNewsHome()
@@ -46,6 +51,7 @@ public class NewsServices {
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findAll();
 		return a;
 	}
+	// All Login EndPoints
 	@GetMapping("/api/login")
 	public List<String> userLogin(@RequestParam String username,@RequestParam String password)
 	{
@@ -123,20 +129,33 @@ public class NewsServices {
 			return resList;
 		}
 	}
+	//End of Login Endpoints
 	
+	//All find EndPoints
 	@GetMapping("/api/user/findOne")
 	public User findOne(@RequestParam String username)
 	{
 		User user = new User();
 		user = (User) userRepository.findUserByUsername(username).get(0);
-		
-		
-		
 		return user;
 	}
 	
+	@GetMapping("/api/findallusers")
+	public List<User> adminSearch()
+	{
+		List<User> users = (List<User>)userRepository.findAll();
+		
+		return users;
+	}
+	@GetMapping("/api/news/findallusers")
+	public List<NewsSnippet> newsSearchByAgency()
+	{
+		
+	}
 	
+	//End of Find Endpoints
 	
+	// All Insert Endpoints.
 	@PostMapping(path = "/api/registration",consumes = "application/json")
 	public void registration(@RequestBody Object user)
 	{
@@ -150,17 +169,10 @@ public class NewsServices {
 		user1.setPassword(((java.util.LinkedHashMap) user).get("password").toString());
 		user1.setPreference(((java.util.LinkedHashMap) user).get("preference").toString());
 		user1.setEmail(((java.util.LinkedHashMap) user).get("email").toString());
-		
-		
 		userRepository.save(user1);
 	}
-	@GetMapping("/api/findallusers")
-	public List<User> adminSearch()
-	{
-		List<User> users = (List<User>)userRepository.findAll();
-		
-		return users;
-	}
+	
+	//End of Insert Endpoints
 	@GetMapping("/api/deleteuser")
 	public void deleteUser(@RequestParam int id)
 	{
@@ -223,7 +235,7 @@ public class NewsServices {
 		}
 	}
 	@PostMapping("/api/news/insert")
-	public void insertNews(@RequestBody Object news)
+	public String insertNews(@RequestBody Object news)
 	{
 		NewsSnippet user1 = new NewsSnippet();
 		user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
@@ -232,7 +244,15 @@ public class NewsServices {
 		user1.setSource_link(((java.util.LinkedHashMap) news).get("newsUrl").toString());
 		user1.setFullStory(((java.util.LinkedHashMap) news).get("story").toString());
 		
-		newsSnippetRepository.save(user1);
+		News_owner x = new News_owner();
+		Optional<User> user = userRepository.findById(Integer.parseInt(((java.util.LinkedHashMap) news).get("source").toString()));
+		if(user.isPresent()) {
+			newsSnippetRepository.save(user1);
+			x.setUser(user.get());
+			x.setNews(user1);
+			
+		}
+		
 	}
 	@PostMapping("/api/news/update")
 	public String updateNews(@RequestBody Object news)
