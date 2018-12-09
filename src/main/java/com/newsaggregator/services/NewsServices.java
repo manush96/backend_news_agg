@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -172,6 +173,13 @@ public class NewsServices {
 	{
 		newsSnippetRepository.deleteById(itemId); 
 	}
+//	@PutMapping("/api/user/update")
+//	public void deleteUser(@RequestParam User user)
+//	{
+//		
+//	if(user.isPresent())
+//		userRepository.delete(user.get());
+//	}
 	@GetMapping("/api/myfeed")
 	public List<NewsSnippet> myfeed(@RequestParam String username)
 	{
@@ -214,8 +222,8 @@ public class NewsServices {
 			return y;
 		}
 	}
-	@GetMapping("/api/news/insert")
-	public void insertNews(@RequestParam Object news)
+	@PostMapping("/api/news/insert")
+	public void insertNews(@RequestBody Object news)
 	{
 		NewsSnippet user1 = new NewsSnippet();
 		user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
@@ -226,17 +234,26 @@ public class NewsServices {
 		
 		newsSnippetRepository.save(user1);
 	}
-	@PostMapping("/api/news/update")
-	public void updateNews(@RequestParam Object news)
+	@PutMapping("/api/news/update")
+	public String updateNews(@RequestBody Object news)
 	{
 		
-		NewsSnippet user1 = new NewsSnippet();
-		user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
-		user1.setImage_url(((java.util.LinkedHashMap) news).get("imgUrl").toString());
-		user1.setSummary(((java.util.LinkedHashMap) news).get("desc").toString());
-		user1.setSource_link(((java.util.LinkedHashMap) news).get("newsUrl").toString());
-		user1.setFullStory(((java.util.LinkedHashMap) news).get("story").toString());
-		newsSnippetRepository.save(user1);
+		Optional<NewsSnippet> x = newsSnippetRepository.findById(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
+		if(x.isPresent())
+		{	
+			newsSnippetRepository.deleteById(Integer.parseInt(((java.util.LinkedHashMap) news).get("id").toString()));
+			NewsSnippet user1 = new NewsSnippet();
+			user1.setHeadline(((java.util.LinkedHashMap) news).get("title").toString());
+			user1.setImage_url(((java.util.LinkedHashMap) news).get("imgUrl").toString());
+			user1.setSummary(((java.util.LinkedHashMap) news).get("desc").toString());
+			user1.setSource_link(((java.util.LinkedHashMap) news).get("newsUrl").toString());
+			user1.setFullStory(((java.util.LinkedHashMap) news).get("story").toString());
+			newsSnippetRepository.save(user1);
+			return "Successful";
+		}else {
+			return "news does not exist";
+		}
+		
 	}
 	@GetMapping("/api/sportshome")
 	public List<NewsSnippet> getSportsHome()
