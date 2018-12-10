@@ -4,9 +4,12 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,10 +30,26 @@ public class User {
 	private String city;
 	private String preference;
 	private String dType;
+	
+	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<News_owner> newsOwner;
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE,fetch=FetchType.LAZY)
 	private List<Advertiser> advertiser;
+	
+	
+	
+	@OneToMany(mappedBy="agency")
+	private List<User> followers;
+	
+	
+	
+	@ManyToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="followers")
+	private User agency;
+	
+	
 	public String getFirstname() {
 		return firstname;
 	}
@@ -86,9 +105,9 @@ public class User {
 	public void setdType(String dType) {
 		this.dType = dType;
 	}
-	public List<Advertiser> getAdvertiser() {
-		return advertiser;
-	}
+//	public List<Advertiser> getAdvertiser() {
+//		return advertiser;
+//	}
 	public void setAdvertiser(List<Advertiser> advertiser) {
 		this.advertiser = advertiser;
 	}

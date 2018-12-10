@@ -11,8 +11,10 @@ public class Advertiser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@ManyToOne()
 	private User user;
+	
 	@ManyToOne()
 	private Advertisement ad;
 	public int getId() {

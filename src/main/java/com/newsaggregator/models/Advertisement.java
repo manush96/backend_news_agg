@@ -24,8 +24,10 @@ public class Advertisement {
 	private String title;
 	private String img_url;
 	private String full_link;
+	
 	@OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE)
 	private List<Advertiser> advertiser;
+	
 	public int getId() {
 		return id;
 	}

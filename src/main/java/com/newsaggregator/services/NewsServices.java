@@ -22,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.newsaggregator.daos.NewsSnippetDao;
+import com.newsaggregator.models.Admin;
 import com.newsaggregator.models.Advertisement;
 import com.newsaggregator.models.Advertiser;
 import com.newsaggregator.models.Contact;
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.models.News_owner;
 import com.newsaggregator.models.User;
+import com.newsaggregator.repositories.AdminRepository;
 import com.newsaggregator.repositories.AdvertisementRepository;
 import com.newsaggregator.repositories.AdvertiserRepository;
 import com.newsaggregator.repositories.ContactRepository;
@@ -52,11 +54,15 @@ public class NewsServices {
 	ContactRepository contactRepository;
 	@Autowired
 	AdvertiserRepository advertiserRepository;
+	
+	@Autowired
+	AdminRepository adminRepository;
 
 	@GetMapping("/api/newshome")
 	public List<NewsSnippet> getNewsHome() {
 		newsSnippetDao.fetchAndInsertHeadlines();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findAll();
+		Collections.reverse(a);
 		return a;
 	}
 
@@ -80,7 +86,7 @@ public class NewsServices {
 	@GetMapping("/api/admin/login")
 	public List<String> adminLogin(@RequestParam String username, @RequestParam String password) {
 		List<String> resList = new ArrayList<String>();
-		User user = userRepository.findUserByUsername(username).get(0);
+		Admin user = adminRepository.findAdminByUsername(username).get(0);
 		if (user.getUsername() == null) {
 			resList.add("false");
 			return resList;
@@ -143,17 +149,36 @@ public class NewsServices {
 		user = (User) userRepository.findUserByUsername(username).get(0);
 		return user;
 	}
-
+	@GetMapping("/api/user/findAllAgency")
+	public List<User> findAllAgency() {
+		List<User> x = userRepository.findUserByDType("agency");
+		return x;
+	}
 	@GetMapping("/api/findallusers")
 	public List<User> adminSearch() {
 		List<User> users = (List<User>) userRepository.findAll();
 		return users;
 	}
-
+	@GetMapping("/api/advert/findByAdvertiser")
+	public List<Advertisement> advertSearch(@RequestParam String username) {
+		List<Advertisement> c = advertRepository.getAdvertByAdvertiser(username);
+		if (c.size() > 0) {
+			Collections.reverse(c);
+			return c;
+		} else {
+			c = new ArrayList<Advertisement>();
+			Advertisement e = new Advertisement();
+			e.setTitle("There is no data here!!");
+			c.add(e);
+			return c;
+		}
+	}
+	
 	@GetMapping("/api/agency/findByAgency")
 	public List<NewsSnippet> newsSearchByAgency(@RequestParam String username) {
 		List<NewsSnippet> c = newsSnippetRepository.getNewsSnippetByAgency(username);
 		if (c.size() > 0) {
+			Collections.reverse(c);
 			return c;
 		} else {
 			c = new ArrayList<NewsSnippet>();
@@ -221,6 +246,7 @@ public class NewsServices {
 		List<User> user = userRepository.findUserByUsername(((java.util.LinkedHashMap) news).get("source").toString());
 		if (user.size() > 0) {
 			newsSnippetRepository.save(user1);
+		
 			x.setUser(user.get(0));
 			x.setNews(user1);
 			ownerRepository.save(x);
@@ -243,6 +269,7 @@ public class NewsServices {
 			advertRepository.save(user1);
 			x.setUser(user.get(0));
 			x.setAd(user1);
+		
 			advertiserRepository.save(x);
 			return "successful";
 		} else {
@@ -258,7 +285,24 @@ public class NewsServices {
 		user1.setName(((java.util.LinkedHashMap) cont).get("name").toString());
 		contactRepository.save(user1);
 	}
-
+//	@PostMapping("/api/contact/insert")
+//	public void insertFollowers(@RequestParam String username, @RequestParam String password) {
+//		String []s = password.split(",");
+//		List<User> x = userRepository.findUserByUsername(username);
+//		if(x.size()>0) {
+//			
+//			for (int i = 0; i < s.length; i++) {
+//				AgencyFollowers y = new AgencyFollowers();
+//				userRepository.findById(Integer.parseInt(s[i]));
+//				if() {
+//					
+//				}
+//				y.setAgency();
+//			}
+//		}
+//		
+//		contactRepository.save(user1);
+//	}
 	// End of Insert Endpoints
 	// Start of Update Endpoints
 	@PostMapping("/api/news/update")
@@ -303,7 +347,7 @@ public class NewsServices {
 		if (x.isPresent()) {
 			LinkedHashMap l = new LinkedHashMap<>();
 			l = (LinkedHashMap)advertisement;
-			advertRepository.updateAdvertiser(l.get("full_link").toString(), l.get("img_url").toString(), l.get("title").toString(), Integer.parseInt(l.get("id").toString()));
+			advertRepository.updateAdvertiser(l.get("full_link").toString(), l.get("image_url").toString(), l.get("title").toString(), Integer.parseInt(l.get("id").toString()));
 			return "Successful";
 		} else {
 			return "news does not exist";
@@ -347,14 +391,14 @@ public class NewsServices {
 				newsSnippetDao.fetchAndInsertEntertainment();
 				a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Entertainment");
 				for (int j = 0; j < 5; j++) {
-					x.add(a.get(i));
+					x.add(a.get(j));
 				}
 				break;
 			case "Science":
 				newsSnippetDao.fetchAndInsertScience();
 				a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Science");
 				for (int j = 0; j < 5; j++) {
-					x.add(a.get(i));
+					x.add(a.get(j));
 				}
 				break;
 			default:
@@ -396,7 +440,6 @@ public class NewsServices {
 	@GetMapping("/api/advert/findOne")
 	public Advertisement findOne(@RequestParam int id)
 	{
-		System.out.println(id+"heheheh");
 		Advertisement user = new Advertisement();
 		user = (Advertisement) advertRepository.findById(id).get();
 		return user;

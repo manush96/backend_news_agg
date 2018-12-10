@@ -9,10 +9,14 @@ public class News_owner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@ManyToOne()
 	private User user;
 	@ManyToOne()
 	private NewsSnippet news;
+	
+	
+	
 	public int getId() {
 		return id;
 	}
