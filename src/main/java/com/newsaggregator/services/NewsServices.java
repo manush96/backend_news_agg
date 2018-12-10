@@ -380,7 +380,7 @@ public class NewsServices {
 		if (user.isPresent())
 			userRepository.delete(user.get());
 	}
-	@RequestMapping(value = "/api/api/user/unfollow", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/api/user/unfollow", method = RequestMethod.DELETE)
 	public void deleteFollower(@RequestParam("user_id") String username,@RequestParam int agency_id) {
 
 		User us= userRepository.findUserByUsername(username).get(0);
