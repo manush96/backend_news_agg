@@ -9,4 +9,6 @@ import com.newsaggregator.models.User;
 
 public interface AgencyFollowerRepository extends CrudRepository<Agency_Follwers, Integer>{
 	public List<Agency_Follwers> findAgency_FollwerByAgency(User agency);
+	public List<Agency_Follwers> findAgency_FollwerByFollower(User follower);
+
 }

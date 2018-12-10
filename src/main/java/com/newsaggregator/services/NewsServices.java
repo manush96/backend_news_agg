@@ -161,6 +161,18 @@ public class NewsServices {
 		List<User> x = userRepository.findUserByDType("agency");
 		return x;
 	}
+	
+	
+	@GetMapping("/api/user/findAgencyByUser")
+	public List<User> findAgencyByUser(@RequestParam String username){
+		User us = userRepository.findUserByUsername(username).get(0);
+		List<Agency_Follwers> afs = afRepo.findAgency_FollwerByFollower(us);
+		List<User> agen= new ArrayList<User>();
+		for(Agency_Follwers a:afs) {
+			agen.add(a.getAgency());
+		}
+		return agen;
+	}
 	@GetMapping("/api/findallusers")
 	public List<User> adminSearch() {
 		List<User> users = (List<User>) userRepository.findAll();
