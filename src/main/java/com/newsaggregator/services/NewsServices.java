@@ -388,6 +388,8 @@ public class NewsServices {
 		List<Agency_Follwers> af = afRepo.findAgency_FollwerByAgency(ag);
 		for(Agency_Follwers a:af) {
 			if(a.getFollower().getId() == us.getId()) {
+				System.out.println("in here");
+
 				afRepo.delete(a);
 			}
 		}
