@@ -173,6 +173,10 @@ public class NewsServices {
 		}
 		return agen;
 	}
+	
+	
+	
+	
 	@GetMapping("/api/findallusers")
 	public List<User> adminSearch() {
 		List<User> users = (List<User>) userRepository.findAll();
@@ -376,7 +380,21 @@ public class NewsServices {
 		if (user.isPresent())
 			userRepository.delete(user.get());
 	}
+	@RequestMapping(value = "/api/api/user/unfollow", method = RequestMethod.DELETE)
+	public void deleteFollower(@RequestParam("user_id") int user_id,@RequestParam int agency_id) {
 
+		User us= userRepository.findById(user_id).get();
+		User ag = userRepository.findById(agency_id).get();
+		List<Agency_Follwers> af = afRepo.findAgency_FollwerByAgency(ag);
+		for(Agency_Follwers a:af) {
+			if(a.getFollower().getId() == us.getId()) {
+				afRepo.delete(a);
+			}
+		}
+		
+	
+	}
+	
 	@RequestMapping(value = "/api/deleteNews/{id}", method = RequestMethod.DELETE)
 	public void deleteNews(@PathVariable("id") int itemId) {
 		newsSnippetRepository.deleteById(itemId);
