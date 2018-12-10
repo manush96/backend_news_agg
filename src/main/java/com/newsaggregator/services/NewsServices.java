@@ -70,7 +70,7 @@ public class NewsServices {
 		newsSnippetDao.fetchAndInsertHeadlines();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findAll();
 		Collections.reverse(a);
-		return a;
+		return a.subList(0, 100);
 	}
 
 	// All Login EndPoints
