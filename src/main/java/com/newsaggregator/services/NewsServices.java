@@ -397,6 +397,17 @@ public class NewsServices {
 	
 	}
 	
+	@RequestMapping(value = "/api/user/follow", method = RequestMethod.GET)
+	public void addFollower(@RequestParam("username") String username,@RequestParam("agency_id") int agency_id) {
+
+		Agency_Follwers af= new Agency_Follwers();
+		af.setAgency(userRepository.findById(agency_id).get());
+		af.setFollower(userRepository.findUserByUsername(username).get(0));
+		afRepo.save(af);
+		
+	
+	}
+	
 	@RequestMapping(value = "/api/deleteNews/{id}", method = RequestMethod.DELETE)
 	public void deleteNews(@PathVariable("id") int itemId) {
 		newsSnippetRepository.deleteById(itemId);
