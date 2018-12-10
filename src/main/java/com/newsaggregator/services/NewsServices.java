@@ -397,7 +397,7 @@ public class NewsServices {
 	
 	}
 	
-	@RequestMapping(value = "/api/user/follow", method = RequestMethod.GET)
+	@GetMapping(value = "/api/user/follow")
 	public void addFollower(@RequestParam("username") String username,@RequestParam("agency_id") int agency_id) {
 
 		Agency_Follwers af= new Agency_Follwers();
