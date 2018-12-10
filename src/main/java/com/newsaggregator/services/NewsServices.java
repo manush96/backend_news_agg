@@ -40,7 +40,7 @@ import com.newsaggregator.repositories.News_ownerRepository;
 import com.newsaggregator.repositories.UserRepository;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true", allowedHeaders = "*")
+@CrossOrigin(origins = "https://obscure-hamlet-50022.herokuapp.com", allowCredentials = "true", allowedHeaders = "*")
 public class NewsServices {
 	@Autowired
 	NewsSnippetRepository newsSnippetRepository;
