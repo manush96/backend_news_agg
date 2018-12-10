@@ -381,7 +381,7 @@ public class NewsServices {
 			userRepository.delete(user.get());
 	}
 	@RequestMapping(value = "/api/user/unfollow", method = RequestMethod.DELETE)
-	public void deleteFollower(@RequestParam("user_id") String username,@RequestParam int agency_id) {
+	public void deleteFollower(@RequestParam("user_id") String username,@RequestParam("agency_id") int agency_id) {
 
 		User us= userRepository.findUserByUsername(username).get(0);
 		User ag = userRepository.findById(agency_id).get();
