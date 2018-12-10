@@ -39,15 +39,16 @@ public class User {
 	private List<Advertiser> advertiser;
 	
 	
-	
 	@OneToMany(mappedBy="agency")
-	private List<User> followers;
+	private List<Agency_Follwers> agency;
+	
+	@OneToMany(mappedBy="follower")
+	private List<Agency_Follwers> followers;
 	
 	
 	
-	@ManyToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="followers")
-	private User agency;
+	
+	
 	
 	
 	public String getFirstname() {
@@ -111,7 +112,7 @@ public class User {
 	public void setAdvertiser(List<Advertiser> advertiser) {
 		this.advertiser = advertiser;
 	}
-	
+
 	
 	
 	

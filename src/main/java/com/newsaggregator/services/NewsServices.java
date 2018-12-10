@@ -25,6 +25,7 @@ import com.newsaggregator.daos.NewsSnippetDao;
 import com.newsaggregator.models.Admin;
 import com.newsaggregator.models.Advertisement;
 import com.newsaggregator.models.Advertiser;
+import com.newsaggregator.models.Agency_Follwers;
 import com.newsaggregator.models.Contact;
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.models.News_owner;
@@ -32,6 +33,7 @@ import com.newsaggregator.models.User;
 import com.newsaggregator.repositories.AdminRepository;
 import com.newsaggregator.repositories.AdvertisementRepository;
 import com.newsaggregator.repositories.AdvertiserRepository;
+import com.newsaggregator.repositories.AgencyFollowerRepository;
 import com.newsaggregator.repositories.ContactRepository;
 import com.newsaggregator.repositories.NewsSnippetRepository;
 import com.newsaggregator.repositories.News_ownerRepository;
@@ -57,6 +59,11 @@ public class NewsServices {
 	
 	@Autowired
 	AdminRepository adminRepository;
+	
+	
+	@Autowired
+	AgencyFollowerRepository afRepo;
+	
 
 	@GetMapping("/api/newshome")
 	public List<NewsSnippet> getNewsHome() {
@@ -285,24 +292,20 @@ public class NewsServices {
 		user1.setName(((java.util.LinkedHashMap) cont).get("name").toString());
 		contactRepository.save(user1);
 	}
-//	@PostMapping("/api/contact/insert")
-//	public void insertFollowers(@RequestParam String username, @RequestParam String password) {
-//		String []s = password.split(",");
-//		List<User> x = userRepository.findUserByUsername(username);
-//		if(x.size()>0) {
-//			
-//			for (int i = 0; i < s.length; i++) {
-//				AgencyFollowers y = new AgencyFollowers();
-//				userRepository.findById(Integer.parseInt(s[i]));
-//				if() {
-//					
-//				}
-//				y.setAgency();
-//			}
-//		}
-//		
-//		contactRepository.save(user1);
-//	}
+	@GetMapping("/api/Agency/insert")
+	public void insertFollowers(@RequestParam String s,@RequestParam String t) {
+		List<User> c = userRepository.findUserByUsername(s);
+		if(c.size()>0) {
+			String []x = t.split(",");
+			for (int i = 0; i < x.length; i++) {
+				User u1= userRepository.findById(Integer.parseInt(x[i])).get();
+				Agency_Follwers a= new Agency_Follwers();
+				a.setAgency(u1);
+				a.setFollower(c.get(0));
+				afRepo.save(a);
+			}	
+		}
+	}
 	// End of Insert Endpoints
 	// Start of Update Endpoints
 	@PostMapping("/api/news/update")
@@ -370,7 +373,24 @@ public class NewsServices {
 	public void deleteAdvert(@PathVariable("id") int itemId) {
 		advertRepository.deleteById(itemId);
 	}
-
+	@GetMapping("/api/user/deleteself")
+	public void deleteUser(@RequestParam String username,@RequestParam int id) {
+		Optional<User> agency = userRepository.findById(id);
+		if (agency.isPresent()) {
+			User user = userRepository.findUserByUsername(username).get(0);
+			List<Agency_Follwers> af = afRepo.findAgency_FollwerByAgency(agency.get());
+			for(Agency_Follwers f:af)
+			{
+				if(f.getFollower().getId() == user.getId())
+				{
+					afRepo.delete(f);
+				}
+			}
+			
+			
+		}
+			
+	}
 	// End of Delete Endpoints
 	@GetMapping("/api/myfeed")
 	public List<NewsSnippet> myfeed(@RequestParam String username) {
