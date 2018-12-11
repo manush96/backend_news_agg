@@ -420,6 +420,15 @@ public class NewsServices {
 	
 	}
 	
+	
+	
+	@RequestMapping(value = "/api/advert/delete", method = RequestMethod.DELETE)
+	public void deleteFollower(@RequestParam("adId") int adId) {
+
+		advertiserRepository.deleteById(adId);
+	
+	}
+	
 	@GetMapping(value = "/api/user/follow")
 	public void addFollower(@RequestParam("username") String username,@RequestParam("agency_id") int agency_id) {
 
