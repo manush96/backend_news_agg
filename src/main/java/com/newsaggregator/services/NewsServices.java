@@ -527,7 +527,6 @@ public class NewsServices {
 	public List<Comment> getComments(@RequestParam("newsId")int newsId)
 	{
 		NewsSnippet ns = newsSnippetRepository.findById(newsId).get();
-		
 		return ns.getComments();
 		
 		
