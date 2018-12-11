@@ -291,6 +291,7 @@ public class NewsServices {
 		{
 			ag.add(l.getAgency());
 		}
+		
 		List<NewsSnippet> ns = new ArrayList<NewsSnippet>();
 
 		for(User u1:ag)
@@ -331,13 +332,14 @@ public class NewsServices {
 		user1.setTitle(((java.util.LinkedHashMap) ad).get("title").toString());
 		user1.setImg_url(((java.util.LinkedHashMap) ad).get("image_url").toString());
 		advertRepository.save(user1);
-		Advertiser x = new Advertiser();
 		List<User> user = userRepository.findUserByUsername(((java.util.LinkedHashMap) ad).get("source").toString());
 		if (user.size() > 0) {
+			Advertiser x = new Advertiser();
+
 			advertRepository.save(user1);
+			
 			x.setUser(user.get(0));
 			x.setAd(user1);
-		
 			advertiserRepository.save(x);
 			return "successful";
 		} else {
