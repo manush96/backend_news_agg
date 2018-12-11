@@ -40,7 +40,9 @@ import com.newsaggregator.repositories.News_ownerRepository;
 import com.newsaggregator.repositories.UserRepository;
 
 @RestController
-@CrossOrigin(origins = "https://obscure-hamlet-50022.herokuapp.com", allowCredentials = "true", allowedHeaders = "*")
+//@CrossOrigin(origins = "https://obscure-hamlet-50022.herokuapp.com", allowCredentials = "true", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:4200","https://obscure-hamlet-50022.herokuapp.com"}, allowCredentials = "true", allowedHeaders = "*")
+
 public class NewsServices {
 	@Autowired
 	NewsSnippetRepository newsSnippetRepository;
@@ -72,6 +74,19 @@ public class NewsServices {
 		Collections.reverse(a);
 		return a.subList(0, 100);
 	}
+	
+//	@GetMapping("api/agencyfeed")
+//	public List<NewsSnippet> getAgencyFeed(@RequestParam("username")String username)
+//	{
+//		List<Agency_Follwers> agencies = afRepo.findAgency_FollwerByFollower(userRepository.findUserByUsername(username).get(0));
+//		List<User> target = new ArrayList<User>();
+//		for(Agency_Follwers a: agencies) {
+//			target.add(a.getAgency());
+//		}
+//		
+//		
+//		
+//	}
 
 	// All Login EndPoints
 	@GetMapping("/api/login")
