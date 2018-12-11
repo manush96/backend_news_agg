@@ -425,7 +425,7 @@ public class NewsServices {
 	@RequestMapping(value = "/api/advert/delete", method = RequestMethod.DELETE)
 	public void deleteFollower(@RequestParam("adId") int adId) {
 
-		advertiserRepository.deleteById(adId);
+		advertRepository.deleteById(adId);
 	
 	}
 	
