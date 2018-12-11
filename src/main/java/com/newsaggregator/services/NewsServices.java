@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.mysql.fabric.xmlrpc.base.Array;
 import com.newsaggregator.daos.NewsSnippetDao;
 import com.newsaggregator.models.Admin;
 import com.newsaggregator.models.Advertisement;
@@ -277,6 +279,26 @@ public class NewsServices {
 		user1.setPreference(((java.util.LinkedHashMap) user).get("preference").toString());
 		user1.setEmail(((java.util.LinkedHashMap) user).get("email").toString());
 		userRepository.save(user1);
+	}
+	
+	@GetMapping("/api/agencyFeed")
+	public List<NewsSnippet> agencyFeed(@RequestParam("userId")String username)
+	{
+		User u=userRepository.findUserByUsername(username).get(0);
+		List<Agency_Follwers> a = afRepo.findAgency_FollwerByFollower(u);
+		List<User> ag= new ArrayList<User>();
+		for(Agency_Follwers l:a)
+		{
+			ag.add(l.getAgency());
+		}
+		List<NewsSnippet> ns = new ArrayList<NewsSnippet>();
+
+		for(User u1:ag)
+		{
+			ns.addAll(newsSnippetRepository.getNewsSnippetByAgency(u1.getUsername()));
+		}
+		return ns;
+		
 	}
 
 	@PostMapping("/api/news/insert")

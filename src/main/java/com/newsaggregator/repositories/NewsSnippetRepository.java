@@ -13,7 +13,7 @@ import com.newsaggregator.models.NewsSnippet;
 
 
 
-@Transactional
+@Transactional	
 public interface NewsSnippetRepository extends JpaRepository<NewsSnippet, Integer> {
 	
 	public List<NewsSnippet> findNewsSnippetByCategory(String CategoryName);
