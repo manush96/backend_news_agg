@@ -26,6 +26,7 @@ import com.newsaggregator.models.Admin;
 import com.newsaggregator.models.Advertisement;
 import com.newsaggregator.models.Advertiser;
 import com.newsaggregator.models.Agency_Follwers;
+import com.newsaggregator.models.Comment;
 import com.newsaggregator.models.Contact;
 import com.newsaggregator.models.NewsSnippet;
 import com.newsaggregator.models.News_owner;
@@ -34,6 +35,7 @@ import com.newsaggregator.repositories.AdminRepository;
 import com.newsaggregator.repositories.AdvertisementRepository;
 import com.newsaggregator.repositories.AdvertiserRepository;
 import com.newsaggregator.repositories.AgencyFollowerRepository;
+import com.newsaggregator.repositories.CommentRepository;
 import com.newsaggregator.repositories.ContactRepository;
 import com.newsaggregator.repositories.NewsSnippetRepository;
 import com.newsaggregator.repositories.News_ownerRepository;
@@ -67,6 +69,12 @@ public class NewsServices {
 	AgencyFollowerRepository afRepo;
 	
 
+	
+	@Autowired 
+	CommentRepository commentRepository;
+	
+	
+	
 	@GetMapping("/api/newshome")
 	public List<NewsSnippet> getNewsHome() {
 		newsSnippetDao.fetchAndInsertHeadlines();
@@ -514,6 +522,16 @@ public class NewsServices {
 		return a;
 	}
 	
+	
+	@GetMapping("api/news/findComment")
+	public List<Comment> getComments(@RequestParam("newsId")int newsId)
+	{
+		NewsSnippet ns = newsSnippetRepository.findById(newsId).get();
+		
+		return ns.getComments();
+		
+		
+	}
 	
 	@GetMapping("/api/advert/findOne")
 	public Advertisement findOne(@RequestParam int id)

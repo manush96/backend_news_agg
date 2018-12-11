@@ -45,7 +45,8 @@ public class User {
 	@OneToMany(mappedBy="follower")
 	private List<Agency_Follwers> followers;
 	
-	
+	@OneToMany(mappedBy="user")
+	private List<Comment> comments;
 	
 	
 	
