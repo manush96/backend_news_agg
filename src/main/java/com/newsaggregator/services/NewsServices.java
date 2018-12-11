@@ -514,6 +514,7 @@ public class NewsServices {
 	public List<NewsSnippet> getSportsHome() {
 		newsSnippetDao.fetchAndInsertSports();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Sport");
+		Collections.reverse(a);
 		return a;
 	}
 
@@ -521,6 +522,7 @@ public class NewsServices {
 	public List<NewsSnippet> getEntertainmentHome() {
 		newsSnippetDao.fetchAndInsertEntertainment();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Entertainment");
+		Collections.reverse(a);
 		return a;
 	}
 
@@ -535,6 +537,7 @@ public class NewsServices {
 	public List<NewsSnippet> getBusniessHome() {
 		newsSnippetDao.fetchAndInsertBusniess();
 		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Busniess");
+		Collections.reverse(a);
 		return a;
 	}
 	
