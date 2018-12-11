@@ -536,7 +536,7 @@ public class NewsServices {
 	@GetMapping("/api/businesshome")
 	public List<NewsSnippet> getBusniessHome() {
 		newsSnippetDao.fetchAndInsertBusniess();
-		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Busniess");
+		List<NewsSnippet> a = (List<NewsSnippet>) newsSnippetRepository.findNewsSnippetByCategory("Business");
 		Collections.reverse(a);
 		return a;
 	}
