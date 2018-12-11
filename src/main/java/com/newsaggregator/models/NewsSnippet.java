@@ -33,12 +33,12 @@ public class NewsSnippet {
 	private List<News_owner> publisher;
 	
 	
-	@OneToMany(mappedBy="news",cascade = CascadeType.REMOVE,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="news",cascade = CascadeType.REMOVE)
 	private List<Comment> comments;
 	
-	public List<Comment> getComments() {
-		return comments;
-	}
+//	public List<Comment> getComments() {
+//		return comments;
+//	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}

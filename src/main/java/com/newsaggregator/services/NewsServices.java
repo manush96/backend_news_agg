@@ -457,6 +457,13 @@ public class NewsServices {
 		}
 			
 	}
+	
+	
+	@GetMapping("/api/findAllContact/")
+	public List<Contact> retAllContact()
+	{
+		return (List<Contact>) contactRepository.findAll();
+	}
 	// End of Delete Endpoints
 	@GetMapping("/api/myfeed")
 	public List<NewsSnippet> myfeed(@RequestParam String username) {
@@ -527,10 +534,29 @@ public class NewsServices {
 	public List<Comment> getComments(@RequestParam("newsId")int newsId)
 	{
 		NewsSnippet ns = newsSnippetRepository.findById(newsId).get();
-		return ns.getComments();
-		
+		return commentRepository.findCommentByNews(ns);
 		
 	}
+	
+	@PostMapping("api/comment/insert")
+	public void insertComment(@RequestBody Object comment)
+	{
+		System.out.println(comment.toString());
+		String username= ((java.util.LinkedHashMap) comment).get("userId").toString();
+		int newsId= Integer.parseInt(((java.util.LinkedHashMap) comment).get("newsId").toString());
+
+		String commen = ((java.util.LinkedHashMap) comment).get("comment").toString();
+		System.out.println(username);
+		Comment c= new Comment();
+		c.setComment(commen);
+		c.setNews(newsSnippetRepository.findById(newsId).get());
+		c.setUser(userRepository.findUserByUsername(username).get(0));
+		commentRepository.save(c);
+
+		
+	}
+	
+	
 	
 	@GetMapping("/api/advert/findOne")
 	public Advertisement findOne(@RequestParam int id)
