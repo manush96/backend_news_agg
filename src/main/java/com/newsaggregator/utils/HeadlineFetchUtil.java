@@ -25,7 +25,7 @@ public class HeadlineFetchUtil {
 	{
 		JSONObject jsonObj = null;
 
-		final String uri = "https://newsapi.org/v2/top-headlines?country=en&apiKey=65c90f5e609b434ab94f2d5e572dd67e";
+		final String uri = "https://newsapi.org/v2/top-headlines?country=en&apiKey=ss";
 
 	    RestTemplate restTemplate = new RestTemplate();
 	    String result = restTemplate.getForObject(uri, String.class);

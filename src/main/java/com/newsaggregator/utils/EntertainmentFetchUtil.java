@@ -22,7 +22,7 @@ public class EntertainmentFetchUtil {
 		{
 			JSONObject jsonObj = null;
 
-			final String uri = "https://newsapi.org/v2/top-headlines?country=us&entertainment=sports&apiKey=65c90f5e609b434ab94f2d5e572dd67e";
+			final String uri = "https://newsapi.org/v2/top-headlines?country=us&entertainment=sports&apiKey=";
 
 		    RestTemplate restTemplate = new RestTemplate();
 		    String result = restTemplate.getForObject(uri, String.class);
